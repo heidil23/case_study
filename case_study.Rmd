@@ -1,11 +1,12 @@
 ---
 title: "Case Study"
 author: Heidi Lumish
-output: git_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(leaflet)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -99,5 +100,27 @@ nyc_airbnb %>%
   geom_boxplot() +
   coord_flip() +
   facet_grid(. ~ room_type)
+```
+
+Price vs. location
+Sample 5000 to make it easier to run
+Resulting plot looks like a map of nyc
+
+```{r}
+nyc_airbnb %>% 
+  filter(price <500) %>% 
+  sample_n(5000) %>% 
+  ggplot(aes(x = lat, y = long, color = price)) +
+  geom_point(alpha = .5)
+```
+
+## Retry leaflet for making maps
+```{r, eval = FALSE}
+nyc_airbnb %>% 
+  sample_n(5000) %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(~lat, ~long)
+
 ```
 
